@@ -1,0 +1,2 @@
+// script two
+function two() {};
