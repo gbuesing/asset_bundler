@@ -30,9 +30,10 @@ module AssetBundler
 
     def self.bundled_asset_include_tag(*args)
       opts = args.last.is_a?(Hash) ? args.pop : {}
-      cache = opts.delete(:cache) #|| raise(ArgumentError, "Bundled asset cache filename must be specified")
+      cache = opts.delete(:cache)
 
-      if cache #options.respond_to?(:bundle_assets) && options.bundle_assets
+      # TODO: only bundle in production and staging
+      if cache
         file_path = asset_file_path(cache)
         unless File.exist?(file_path)
           write_asset_file_contents(file_path, args)

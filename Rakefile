@@ -16,6 +16,7 @@ begin
     gemspec.email = "gbuesing@gmail.com"
     gemspec.homepage = "http://github.com/gbuesing/asset_bundler"
     gemspec.authors = ["Geoff Buesing"]
+    gemspec.add_dependency('asset_timestamps_cache', '>= 0.1.1')
   end
 rescue LoadError
   puts "Jeweler not available. Install it with: gem install jeweler"
