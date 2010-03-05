@@ -12,7 +12,12 @@ module AssetBundler
       AssetBundler.stylesheet_link_tag(*args)
     end
   end
-
+  
+  @@bundle_environments = ['production', 'staging']
+  
+  def self.bundle_environments
+    @@bundle_environments
+  end
 
   def self.javascript_include_tag(*args)
     bundled_asset_include_tag(*args) do |cache|
@@ -32,8 +37,7 @@ module AssetBundler
       opts = args.last.is_a?(Hash) ? args.pop : {}
       cache = opts.delete(:cache)
 
-      # TODO: only bundle in production and staging
-      if cache
+      if cache && @@bundle_environments.include?(ENV['RACK_ENV'])
         file_path = asset_file_path(cache)
         unless File.exist?(file_path)
           write_asset_file_contents(file_path, args)
