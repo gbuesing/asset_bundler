@@ -3,6 +3,7 @@ require 'fileutils'
 
 module AssetBundler
 
+  # Mix this in to view context for convenient access
   module ViewHelper
     def javascript_include_tag(*args)
       AssetBundler.javascript_include_tag(*args)
@@ -15,6 +16,9 @@ module AssetBundler
   
   @@bundle_environments = ['production', 'staging']
   
+  # Expose @@bundle_environments via class method so that you can add other bundle enviroments:
+  #
+  #   AssetBundler.bundle_environments << "staging2"
   def self.bundle_environments
     @@bundle_environments
   end
