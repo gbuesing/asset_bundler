@@ -21,7 +21,6 @@ Gem::Specification.new do |s|
      "Rakefile",
      "VERSION",
      "lib/asset_bundler.rb",
-     "test/fixtures/.DS_Store",
      "test/fixtures/public/scripts/one.js",
      "test/fixtures/public/scripts/three.js",
      "test/fixtures/public/scripts/two.js",
