@@ -2,7 +2,8 @@ require 'asset_timestamps_cache'
 require 'fileutils'
 
 module AssetBundler
-
+  class FileNotFound < StandardError; end
+  
   # Mix this in to view context for convenient access
   module ViewHelper
     def javascript_include_tag(*args)
@@ -53,16 +54,19 @@ module AssetBundler
     end
 
     def self.join_asset_file_contents(paths)
-      paths.collect { |path| File.read(asset_file_path(path)) }.join("\n\n")
+      paths.collect { |path| File.read(path) }.join("\n\n")
     end
 
     def self.write_asset_file_contents(joined_asset_path, asset_paths)
+      file_paths = asset_paths.map {|p| asset_file_path(p)}
+      file_paths.each {|p| raise(FileNotFound, "#{p.inspect} does not exist") unless File.exist?(p)}
+      
       FileUtils.mkdir_p(File.dirname(joined_asset_path))
-      File.open(joined_asset_path, "w+") { |cache| cache.write(join_asset_file_contents(asset_paths)) }
+      File.open(joined_asset_path, "w+") { |cache| cache.write(join_asset_file_contents(file_paths)) }
 
       # Set mtime to the latest of the combined files to allow for
       # consistent ETag without a shared filesystem.
-      mt = asset_paths.map { |p| File.mtime(asset_file_path(p)) }.max
+      mt = file_paths.map { |p| File.mtime(p) }.max
       File.utime(mt, mt, joined_asset_path)
     end
 
